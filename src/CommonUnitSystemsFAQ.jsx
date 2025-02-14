@@ -2,6 +2,7 @@ import React from 'react';
 
 export default function CommonUnitSystemsFAQ() {
     return (
+        <div className="bg-white p-6 rounded shadow-md">
         <div className="p-8">
             <h1><b>Common Unit Systems</b></h1>
 
@@ -204,6 +205,7 @@ export default function CommonUnitSystemsFAQ() {
                 <li>stone (symbol: st) &ndash; 6.350 kilograms</li>
                 <li>ton (symbol: t) &ndash; 1,016.047 kilograms</li>
             </ul>
+        </div>
         </div>
     );
 }

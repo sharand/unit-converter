@@ -35,21 +35,23 @@
     <meta name="twitter:image" content="/assets/cover.png" />
 
     <!-- Favicon -->
-    <!-- <link rel="icon" type="image/png" href="/assets/my-icon.png" /> -->
     <link rel="icon" type="image/png" href="/browser.png" />
 
     <!-- Preconnects for Performance (Google Fonts, Ads, etc.) -->
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin />
 
-    <!-- Example: Google Font (optional) -->
+    <!-- Google Font (optional) -->
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
       rel="stylesheet"
     />
 
-    <!-- Tailwind CSS (Optional, for quickly styling) -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@latest/dist/tailwind.min.css" />
+    <!-- Tailwind CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@latest/dist/tailwind.min.css"
+    />
 
     <!-- Google AdSense Script -->
     <script
@@ -57,27 +59,15 @@
       async
       src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
     ></script>
-
-    <!-- Additional Ads or Analytics can go here -->
   </head>
   <body class="bg-gray-50 text-gray-900 font-sans leading-relaxed">
-    <!-- Navigation (Optional) -->
-    <header class="bg-white border-b p-4 flex justify-between items-center shadow-sm">
-      <h1 class="text-xl font-bold">UnitConverter</h1>
-      <nav>
-        <a href="/" class="mr-4 text-blue-600 hover:text-blue-800">Home</a>
-        <a href="/faq" class="text-blue-600 hover:text-blue-800">FAQ</a>
-      </nav>
-    </header>
-
-    <!-- Main Content -->
-    <main id="root" class="container mx-auto p-4">
-      <!-- React or other framework will mount here -->
-    </main>
+    <!-- No header here -->
+    
+    <!-- Main Content / React App Mount -->
+    <main id="root" class="container mx-auto p-4"></main>
 
     <!-- Example Ad Placement (AdSense) -->
     <div class="container mx-auto p-4">
-      <!-- "Responsive" ad slot example -->
       <ins
         class="adsbygoogle block"
         style="display:block"
@@ -91,7 +81,5 @@
 
     <!-- Minimal JS: your React app, Vite, etc. -->
     <script type="module" src="/src/main.jsx"></script>
-    
   </body>
 </html>
-
