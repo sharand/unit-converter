@@ -64,7 +64,7 @@ export default async function handler(req, res) {
 
   try {
     const response = await openai.chat.completions.create({
-      model: "text-embedding-3-small", // Changing from "gpt-4-turbo" to "text-embedding-3-small" Using OpenAI's GPT-4 Turbo model
+      model: "gpt-3.5-turbo", // Changing from "gpt-4-turbo" to "text-embedding-3-small" Using OpenAI's GPT-4 Turbo model
       messages: [
         {
           role: "system",
