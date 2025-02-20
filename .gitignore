@@ -24,3 +24,6 @@ dist-ssr
 *.sw?
 
 /scratch.txt
+/scratch1.txt
+.env
+/server.js

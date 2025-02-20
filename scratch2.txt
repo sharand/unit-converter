@@ -1,0 +1,46 @@
+Update UnitConverter.jsx code base to integrate AI to use for conversion
+
+1. Any user can land of conversion page, if they want to use AI feature for conversion they have to sign in with valid email id ending with popular free email providers like  @gmail.com, @yahoo.com etc. Create a user sign up page, when the user clicks of use AI for conversion, take them to signup page
+
+Update UnitConverter.jsx code base to integrate AI to use for conversion
+
+1. Any user can land of conversion page and they can use AI feature for conversion, restrict the user to do make only 3 queries per browser session ( use IP address, browser cookie to restricting and spamming the AI API service abuse)
+
+2. Below is the example code using deepseek, it can be changed in feature based on new models, make sure not to expose this API keep as part of browser session.
+
+3. Use the tempratrue setting to adjust to keep the conversions only related to Unit conversion and avoid other AI tasks like coding etc., and limit the output token to minimum to save cost
+
+4. Provide some useful prompt hints to the users so users can copy and modify the prompts for their needs egs:
+1. What is the average mpg does a sedan in USA will give ?
+2. What is the ideal water to milk ratio per gallon so it won't get diluted a lot?
+
+// Please install OpenAI SDK first: `npm install openai`
+
+import OpenAI from "openai";
+
+const openai = new OpenAI({
+        baseURL: 'https://api.deepseek.com',
+        apiKey: '<DeepSeek API Key>'
+});
+
+async function main() {
+  const completion = await openai.chat.completions.create({
+    messages: [{ role: "system", content: "You are a helpful assistant." }],
+    model: "deepseek-chat",
+  });
+
+  console.log(completion.choices[0].message.content);
+}
+
+main();
+
+The Temperature Parameter
+The default value of temperature is 1.0.
+
+We recommend users to set the temperature according to their use case listed in below.
+USE CASE	TEMPERATURE
+Coding / Math   	0.0
+Data Cleaning / Data Analysis	1.0
+General Conversation	1.3
+Translation	1.3
+Creative Writing / Poetry	1.5

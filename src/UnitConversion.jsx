@@ -2,6 +2,27 @@ import React, { useState, useEffect } from "react";
 import Select from "react-select";               // <-- react-select
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import OpenAI from 'openai';
+
+// Initialize OpenAI with DeepSeek API
+// const openai = new OpenAI({
+//   baseURL: 'https://api.deepseek.com',
+//   apiKey: '<DeepSeek API Key>',
+//   dangerouslyAllowBrowser: true, // Replace with your actual API key
+// });
+
+// Function to track query limits per session
+const getQueryCount = () => {
+  return parseInt(localStorage.getItem('queryCount') || '0', 10);
+};
+
+const trackQuery = () => {
+  localStorage.setItem('queryCount', getQueryCount() + 1);
+};
+
+const checkQueryLimit = () => {
+  return getQueryCount() < 3;
+};
 
 //------------------------------------------
 // 1) All Category Factors & Converters
@@ -483,7 +504,7 @@ const categories = {
 // -----------------------------------------------------------------------
 const translations = {
   en: {
-    title: "Mega Converter",
+    title: "Common Converters",
     language: "Language",
     darkMode: "Dark Mode",
     category: "Category",
@@ -540,6 +561,11 @@ export default function UnitConverter() {
   const [value, setValue] = useState("");
   const [result, setResult] = useState("");
 
+  // AI Conversion
+  const [query, setQuery] = useState('');
+  const [conversionResult, setConversionResult] = useState('');
+  const [error, setError] = useState('');
+
   // 1) Fetch currency on mount
   useEffect(() => {
     (async function() {
@@ -578,8 +604,36 @@ export default function UnitConverter() {
     }
   }, [darkMode]);
 
-  // doConvert => always re-run if from/to changes
-  // We'll store the function in a ref or just define it here.
+  // 4) AI Conversion Handler
+  const handleAIConversion = async () => {
+    if (!checkQueryLimit()) {
+      setError('You have reached the limit of 3 AI queries per session.');
+      return;
+    }
+
+    try {
+      trackQuery();
+      const response = await fetch('/api/aiconvert', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ query }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch conversion result');
+      }
+
+      const data = await response.json();
+      setConversionResult(data.result);
+    } catch (err) {
+      console.error("Error with AI API:", err);
+      setError("Something went wrong with the conversion.");
+    }
+  };
+
+  // 5) doConvert => always re-run if from/to changes
   const doConvert = (val, from, to) => {
     const numericVal = parseFloat(val);
     if (isNaN(numericVal)) {
@@ -604,7 +658,7 @@ export default function UnitConverter() {
     }
   };
 
-  // 4) Step function
+  // 6) Step function
   const stepValue = (delta) => {
     const curr = parseFloat(value) || 0;
     const newVal = curr + delta;
@@ -613,7 +667,7 @@ export default function UnitConverter() {
     doConvert(String(newVal), fromUnit, toUnit);
   };
 
-  // 5) Handlers
+  // 7) Handlers
   const handleValueChange = (val) => {
     setValue(val);
     doConvert(val, fromUnit, toUnit);
@@ -764,6 +818,38 @@ export default function UnitConverter() {
             {t.result}: {result}
           </div>
         )}
+
+        {/* AI Conversion Section */}
+        <div className="mt-8">
+          <h2 className="text-2xl font-bold mb-4">AI-Powered Unit Conversion</h2>
+          <div className="mt-4">
+            <h3 className="text-lg font-semibold">Helpful Prompt Hints:</h3>
+            <ul className="list-disc pl-6">
+              <li>What is the average mpg a sedan in the USA will give?</li>
+              <li>What is the ideal water-to-milk ratio per gallon so it won't get diluted a lot?</li>
+            </ul>
+          </div>
+          <br></br>
+          <textarea
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Ask about unit conversion (e.g. 'Convert 1 mile to km')"
+            className="border rounded p-2 w-full"
+          />
+          <button
+            onClick={handleAIConversion}
+            className="bg-blue-500 text-white px-4 py-2 rounded mt-2"
+          >
+            Convert with AI
+          </button>
+          {error && <div className="text-red-500 mt-2">{error}</div>}
+          {conversionResult && (
+            <div className="mt-4 text-xl font-semibold">
+              AI Result: {conversionResult}
+            </div>
+          )}
+          
+        </div>
       </CardContent>
     </Card>
   );
